@@ -32,7 +32,7 @@ $ubicacion="Localizacion del proyecto";
 $html='  
 <html>
 <head>
-	<title>Reporte</title>
+	<title>Resumen de reporte de Rupturas de cilindros</title>
 
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -114,7 +114,7 @@ $html='
 		<tr>
 			<td rowspan="2" width="20%"><img src="../imagenes/saybelogo.png"></td>
 			<td rowspan="2" width="60%">
-				<CENTER><h3>RESUMEN DE RUPTURA DE VIGAS DE CONCRETO EN TEGUCIGALPA</h3></CENTER>
+				<CENTER><h3>RESUMEN DE RUPTURA DE CILINDROS DE CONCRETO EN TEGUCIGALPA</h3></CENTER>
 			</td>
 			<td width="20%"><CENTER><h3>CÓDIGO:</h3></CENTER></td>
 		</tr>
@@ -122,7 +122,7 @@ $html='
 			<td width="20%"><CENTER><h3>VERSION: </h3></CENTER></td>
 		</tr>
 	</table>
-	<p>Ref. Norma ASTM C 78/C 78M 10</p>
+	<p>Ref. Norma ASTM C 39/C 39M 12 ; C 617/C 617M 11</p>
 	<br>
 	<table class="tabla-descripcion">
 		<tr>
@@ -153,14 +153,13 @@ $html='
 						<td width="15%">Elemento</td>
 						<td width="6%">Temp. °C</td>
 						<td width="8%">Fecha Ruptura</td>
-						<td width="5%">No. Días</td>
-						<td width="5%">Ancho</td>
-						<td width="5%">Alto</td>
-						<td width="6%">Claro</td>
+						<td width="5%">No. Días</td> 
 						<td width="6%">Lectura Lbs.</td>
 						<td width="6%">M.R. Lbs/Pulg^2</td>
-						<td width="6%">M.R. Diseño</td>
+						<td width="6%">Densidad</td>
+						<td width="6%">F´c Lbs/Pulg</td>
 						<td width="6%">% Alcanzado</td>
+						<td width="6%">Tipo fractura</td>
 						<td width="7%">Orden de trabajo</td>
 					 </tr></tr>';
 
@@ -177,7 +176,7 @@ $html='
 			        ."a.orden_trabajo  "
 					."from tbl_lab_cilindro_viga_muestra_concreto a "
 					."left join tbl_lab_muestra_concreto c on a.id_codigo_proyecto = c.id_codigo_proyecto "
-					."where a.tipo_cilindro_viga = 'viga' and c.id_codigo_proyecto = '".$codigoProyecto."'";
+					."where a.tipo_cilindro_viga = 'cilindro' and c.id_codigo_proyecto = '".$codigoProyecto."'";
 	$cont=0;
 	$resultado = $conexion->ejecutarInstruccion($consultaSQL);
 	while ($fila = $conexion->obtenerFila($resultado)){ 
@@ -190,12 +189,11 @@ $html='
 				<td>'.$fila['elemento'].'</td>
 				<td>'.$fila['temperatura'].'</td>
 				<td>'.$fila['fecha_ruptura'].'</td>
-				<td>'.$fila['n_dias'].'</td>
-				<td>'.$cont.'</td>
-				<td>'.$cont.'</td>
-				<td>'.$cont.'</td>
+				<td>'.$fila['n_dias'].'</td> 
 				<td>'.$fila['lectura_lbs'].'</td>
 				<td>'.$fila['resistencia_lbsPulg2'].'</td>
+				<td>'.$cont.'</td>
+				<td>'.$cont.'</td>
 				<td>'.$cont.'</td>
 				<td>'.$fila['rest_porcentaje'].'</td>
 				<td>'.$fila['orden_trabajo'].'</td> 
@@ -222,6 +220,6 @@ $mipdf ->load_html(utf8_decode($html));
 $mipdf ->render();
 echo $html;
 # Enviamos el fichero PDF al navegador.
-$mipdf ->stream('Reporte_Ruptura_Vigas.pdf');
+$mipdf ->stream('Reporte_Ruptura_cilindros.pdf');
 
 ?>

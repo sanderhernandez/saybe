@@ -1,3 +1,10 @@
+<?php
+
+include_once("../class/class_conexion.php");  
+$miConexion = new Conexion();
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,28 +35,50 @@
 				  	</div>	  	
 				  </div>
 				  <div class="panel-body">
+				  	<div class="row">
+				  		<div class="col-sm-5">
+				  			<select class="form-control" name="tiposReporte">
+							  <option value="1">Reporte de control de muestras de campo</option>
+							  <option value="2">Reporte de rupturas de vigas</option>
+							  <option value="3">Reporte de rupturas de Cilindros</option> 
+							</select>
+				  		</div>
+				  		<div class="col-sm-2"> 
+				  			<input type="text" class="form-control" id="txtCodProyecto" placeholder="Codigo">
+				  		</div>
+				  		<div class="col-sm-2"> 
+				  			<input type="text" class="form-control" id="txtOrden" placeholder="Orden de trabajo">
+				  		</div>
+				  		<div class="col-sm-3"> 
+				  			<a  onclick="descargar()"  href="#" class="btn btn-default ">Descargar <img src="../imagenes/pdf.png" width="25" height="20"/></a>
+				  		</div> 
+				  	</div>
 				    <br>
 				    <table class="table">
-				    	<thead>
-			    			<th>Reporte disponible</th>
-			    			<th>Formato</th>
-			    			<th>Acción</th> 
+				    	<thead> 
+			    			<th>Codigo  </th>
+			    			<th>Nombre de proyecto</th>
+			    			<th>Localizacíón</th> 
 				    	</thead>
 				    	<tbody> 
-				    		<tr>
-				    			<td>Reporte de control de muestras de campo</td>
-					    		<td>PDF</td>
-					    		<td>
-					    			<a href="reporteControlMuestraConcreto.php?codProyecto=S1608&ordenTrabajo=35" class="btn btn-default ">Descargar<img src="../imagenes/pdf.png" width="25" height="20"/></a>
-					    		</td>
-				    		</tr>
-				    		<tr>
-				    			<td>Reporte de rupturas de vigas</td>
-					    		<td>PDF</td>
-					    		<td>
-					    			<a href="reporteRupturaDeVigas.php?codProyecto=S1702" class="btn btn-default ">Descargar<img src="../imagenes/pdf.png" width="25" height="20"/></a>
-					    		</td>
-				    		</tr>
+				    <?php
+
+					    $consultaSQL = "select id_codigo_proyecto, nombre_proyecto, ubicacion from tbl_proyecto";
+						$resultado = $miConexion->ejecutarInstruccion($consultaSQL);
+						while ($fila = $miConexion->obtenerFila($resultado)){ 
+					?>
+							<tr> 
+								<td><?php echo $fila['id_codigo_proyecto']?></td>
+								<td><?php echo $fila['nombre_proyecto']?></td>
+								<td><?php echo $fila['ubicacion']?></td>
+							</tr>
+							
+					<?php 	}
+
+					$miConexion->liberarResultado($resultado);
+					$miConexion->cerrarConexion();
+
+				    ?>
 				    		
 				    	</tbody>
 				    </table>
@@ -59,6 +88,63 @@
 		</div>
 		
 	</div>
+
+	<script src="../js/jquery.js"></script>
+	<script type="text/javascript">
+		function codProyectoVacio(){ 
+			if ($('#txtCodProyecto').val() == '') {
+				alert('Necesita indicar el código del proyecto');
+				return true;
+			}else 
+				return false;
+		}
+
+		function txtOrdenvacio(){
+			if ($('#txtOrden').val() == '') {
+				alert('Necesita indicar el numero de orden de trabajo');
+				return true;
+			}else  
+				return false;
+		}
+
+		function descargaR1(){
+			if( codProyectoVacio()==false && txtOrdenvacio()==false){
+				var url1 = "reporteControlMuestraConcreto.php?codProyecto="+$('#txtCodProyecto').val()+"&ordenTrabajo="+$('#txtOrden').val(); 
+				window.location.href = url1;
+			}			
+		}
+
+		function descargaR2(){
+			if( codProyectoVacio()==false  ){
+				var url1 = "reporteRupturaDeVigas.php?codProyecto="+$('#txtCodProyecto').val(); 
+				window.location.href = url1;
+			}			
+		}
+
+		function descargaR3(){
+			if( codProyectoVacio()==false  ){
+				var url1 = "reporteRupturaCilindros.php?codProyecto="+$('#txtCodProyecto').val(); 
+				window.location.href = url1;
+			}			
+		}
+
+		function descargar(){ 
+			var opcion = $('select[name=tiposReporte]').val(); 
+			switch(opcion){
+				case '1':
+					alert(opcion);
+					descargaR1();
+					break;
+				case '2': 
+					descargaR2();
+					break;
+				case '3':
+					descargaR3();
+					break;
+			} 
+		}
+		
+	</script>
 
 </body>
 </html>

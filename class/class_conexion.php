@@ -8,12 +8,14 @@
 		private $baseDatos="db_saybe";
 		private $puerto="3306";
 		private $link;
+		private $tildes;
 
 		public function __construct(){
 			$this->establecerConexion();			
 		}
 
 		public function establecerConexion(){
+
 			$this->link = mysqli_connect($this->host, $this->usuario, $this->contrasena, $this->baseDatos, $this->puerto);
 
 			if (!$this->link){
@@ -32,7 +34,7 @@
 			mysqli_close($this->link);
 		}
 
-		public function ejecutarInstruccion($sql){
+		public function ejecutarInstruccion($sql){  
 			return mysqli_query($this->link, $sql);
 		}
 
