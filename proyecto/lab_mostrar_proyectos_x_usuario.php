@@ -1,10 +1,22 @@
 
 		<?php
+			//include('../class_conexion.php');
 			include('../conexion.php');
 			header( 'Content-Type: text/html;charset=utf-8_spanish2_ci' );
 			$user=$_GET["user"];
 			$grupo_usuario=$_GET["grupo_usuario"];
 			//$contra=$_GET["contra"];
+
+
+/*
+			$con = new Conexion();
+			$sql = "SELECT * FROM tbl_usuario";
+			$resultado = $con->ejecutarInstruccion($sql);
+
+			$fila = $con->obtenerFila($resultado);
+
+			echo $fila["contrasena"];
+*/
 
 			if($resultset=getSQLResultSet("SELECT P.id_codigo_proyecto, P.nombre_proyecto_abreviado
 				FROM tbl_proyecto as P
