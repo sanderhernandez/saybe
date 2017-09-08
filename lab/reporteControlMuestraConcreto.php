@@ -1,7 +1,7 @@
-<?php 
+<?php
 # Cargamos la librería dompdf.
-require_once("../dompdf/dompdf_config.inc.php");  
-include_once("../class/class_conexion.php");  
+require_once("../dompdf/dompdf_config.inc.php");
+include_once("../class/conexion.php");
 
 $conexion = new Conexion();
 
@@ -21,7 +21,7 @@ $laboratorista = "";
 
 
 	$resultado = $conexion->ejecutarInstruccion($consultaSQL);
-	while ($fila = $conexion->obtenerFila($resultado)){ 
+	while ($fila = $conexion->obtenerFila($resultado)){
 		 $cliente = $fila['nombre_cliente'];
 		 $nombreProyecto = $fila['nombre_proyecto'];
 		 $ubicacion = $fila['ubicacion'];
@@ -33,7 +33,7 @@ $laboratorista = "";
 	$conexion->liberarResultado($resultado);
 
 # Contenido HTML del documento que queremos generar en PDF.
-$html='  
+$html='
 <html>
 <head>
 	<title>Reporte de control de muestras de concreto</title>
@@ -42,8 +42,8 @@ $html='
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="">  
-	
+    <meta name="author" content="">
+
 	<style type="text/css">
 		* {
 		  margin:0; padding:0;
@@ -59,7 +59,7 @@ $html='
 		}
 
 		.table{
-		   border-collapse: collapse; 
+		   border-collapse: collapse;
 		   width: 100%;
 		}
 
@@ -68,20 +68,20 @@ $html='
 		}
 
 		.tabla-descripcion{
-		   border-style: none; 
+		   border-style: none;
 		   width: 100%;
 		   font:14px Arial, serif;
 		   font-weight: bold;
 		}
 
-		.tabla-descripcion td{  
+		.tabla-descripcion td{
 			padding-left: 15px;
 			padding-right: 5px;
 			padding-bottom: 5px;
 			padding-top: 5px;
 		}
 
-		.celdas-subtitulo{ 
+		.celdas-subtitulo{
 			border:1px solid #000;
 			border-left-width: 0px;
 			border-right-width: 0px;
@@ -110,7 +110,7 @@ $html='
 			</td>
 			<td width="28%"><CENTER><h3>CÓDIGO:</h3></CENTER></td>
 		</tr>
-		<tr> 
+		<tr>
 			<td width="22%"><CENTER><h3>VERSION: </h3></CENTER></td>
 		</tr>
 	</table>
@@ -130,7 +130,7 @@ $html='
 			<td>&nbsp;&nbsp;</td>
 			<td>Código de proyecto:</td>
 			<td class="celdas-subtitulo">'.$codigoProyecto.'</td>
-		</tr> 
+		</tr>
 		<tr>
 			<td>Ubicación</td>
 			<td class="celdas-subtitulo">'.$ubicacion.'</td>
@@ -144,13 +144,13 @@ $html='
 			<td>&nbsp;&nbsp;</td>
 			<td>Elemento</td>
 			<td class="celdas-subtitulo">'.$elemento.'</td>
-		</tr> 
+		</tr>
 	</table>
 	<br>
 	<table class="tabla-descripcion">
 		<tr>
 			<td width="14%">Tipo de muestra: </td>
-			<td width="50%">'.$tipoMuestra.'</td> 
+			<td width="50%">'.$tipoMuestra.'</td>
 			<td></td>
 		</tr>
 	</table>
@@ -174,7 +174,7 @@ $html='
 
 	$consultaSQL = "Select * from tbl_lab_muestra_concreto where id_codigo_proyecto = '".$codigoProyecto."'";
 	$resultado = $conexion->ejecutarInstruccion($consultaSQL);
-	while ($fila = $conexion->obtenerFila($resultado)){ 
+	while ($fila = $conexion->obtenerFila($resultado)){
 		$html.='
 			<tr>
 				<td>'.$fila['id_n_viaje'].'</td>
@@ -195,10 +195,10 @@ $html='
 	$conexion->liberarResultado($resultado);
 	$conexion->cerrarConexion();
 
-	$html.='</table></body></html>';  
+	$html.='</table></body></html>';
 
 # Instanciamos un objeto de la clase DOMPDF.
-$mipdf = new DOMPDF();  
+$mipdf = new DOMPDF();
 
 # Definimos el tamaño y orientación del papel que queremos.
 # O por defecto cogerá el que está en el fichero de configuración.
