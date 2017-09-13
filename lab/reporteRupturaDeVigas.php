@@ -1,7 +1,7 @@
-<?php
+<?php 
 # Cargamos la librería dompdf.
-require_once("../dompdf/dompdf_config.inc.php");
-include_once("../class/conexion.php");
+require_once("../dompdf/dompdf_config.inc.php");  
+include_once("../class/class_conexion.php");  
 
 $conexion = new Conexion();
 
@@ -12,15 +12,15 @@ $ubicacion="Localizacion del proyecto";
 
 //Primero se extrae la información del proyecto:
 	$consultaSQL = "select a.id_codigo_proyecto, "
-				."b.nombre_cliente, "
+				."b.nombre_cliente, " 
 				."a.nombre_proyecto, "
 				."a.ubicacion "
 				."from tbl_proyecto a "
-				."inner join tbl_cliente b on a.id_cliente = b.id_cliente "
+				."inner join tbl_cliente b on a.id_cliente = b.id_cliente " 
 				."where a.id_codigo_proyecto = '".$codigoProyecto."'";
 
 	$resultado = $conexion->ejecutarInstruccion($consultaSQL);
-	while ($fila = $conexion->obtenerFila($resultado)){
+	while ($fila = $conexion->obtenerFila($resultado)){ 
 		 $cliente = $fila['nombre_cliente'];
 		 $nombreProyecto = $fila['nombre_proyecto'];
 		 $ubicacion = $fila['ubicacion'];
@@ -29,7 +29,7 @@ $ubicacion="Localizacion del proyecto";
 	$conexion->liberarResultado($resultado);
 
 # Contenido HTML del documento que queremos generar en PDF.
-$html='
+$html='  
 <html>
 <head>
 	<title>Reporte</title>
@@ -38,8 +38,8 @@ $html='
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta name="author" content="">  
+	
 	<style type="text/css">
 		* {
 		  margin:0; padding:0;
@@ -55,7 +55,7 @@ $html='
 		}
 
 		.table{
-		   border-collapse: collapse;
+		   border-collapse: collapse; 
 		   width: 100%;
 		}
 
@@ -64,7 +64,7 @@ $html='
 		}
 
 		.tabla-descripcion{
-		   border-style: none;
+		   border-style: none; 
 		   width: 100%;
 		   font:14px Arial, serif;
 		   font-weight: bold;
@@ -78,14 +78,14 @@ $html='
 			border-top-width: 0px;
 		}
 
-		.tabla-descripcion td{
+		.tabla-descripcion td{  
 			padding-left: 15px;
 			padding-right: 5px;
 			padding-bottom: 5px;
 			padding-top: 5px;
 		}
 
-		.celdas-subtitulo{
+		.celdas-subtitulo{ 
 			border:1px solid #000;
 			border-left-width: 0px;
 			border-right-width: 0px;
@@ -94,7 +94,7 @@ $html='
 		}
 		.texto-tabulacion{
 			font:12px Arial, serif;
-		}
+		} 
 
 		.fondo_celda{
 			background-color: #C0C0C0;
@@ -118,7 +118,7 @@ $html='
 			</td>
 			<td width="20%"><CENTER><h3>CÓDIGO:</h3></CENTER></td>
 		</tr>
-		<tr>
+		<tr> 
 			<td width="20%"><CENTER><h3>VERSION: </h3></CENTER></td>
 		</tr>
 	</table>
@@ -135,14 +135,14 @@ $html='
 		<tr>
 			<td>Proyecto:</td>
 			<td >'.$nombreProyecto.'</td>
-			<td>&nbsp;&nbsp;</td>
-		</tr>
+			<td>&nbsp;&nbsp;</td> 
+		</tr> 
 		<tr>
 			<td>Localización:</td>
 			<td >'.$ubicacion.'</td>
-			<td>&nbsp;&nbsp;</td>
-		</tr>
-	</table>
+			<td>&nbsp;&nbsp;</td> 
+		</tr> 
+	</table> 
 	<br>
 
 	<table class="table texto-tabulacion"  >
@@ -180,7 +180,7 @@ $html='
 					."where a.tipo_cilindro_viga = 'viga' and c.id_codigo_proyecto = '".$codigoProyecto."'";
 	$cont=0;
 	$resultado = $conexion->ejecutarInstruccion($consultaSQL);
-	while ($fila = $conexion->obtenerFila($resultado)){
+	while ($fila = $conexion->obtenerFila($resultado)){ 
 		$cont++;
 		$html.='
 			<tr>
@@ -198,18 +198,18 @@ $html='
 				<td>'.$fila['resistencia_lbsPulg2'].'</td>
 				<td>'.$cont.'</td>
 				<td>'.$fila['rest_porcentaje'].'</td>
-				<td>'.$fila['orden_trabajo'].'</td>
+				<td>'.$fila['orden_trabajo'].'</td> 
 			</tr>';
 	}
 
 	$conexion->liberarResultado($resultado);
 	$conexion->cerrarConexion();
 
-	$html.='</table></body></html>';
+	$html.='</table></body></html>'; 
 	echo $html;
 
  # Instanciamos un objeto de la clase DOMPDF.
-$mipdf = new DOMPDF();
+$mipdf = new DOMPDF();  
 
 # Definimos el tamaño y orientación del papel que queremos.
 # O por defecto cogerá el que está en el fichero de configuración.
