@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include_once("../class/class_conexion.php");  
 $miConexion = new Conexion();
 
@@ -18,7 +18,7 @@ $codProyecto = $_GET['codProyecto'];
     <meta name="author" content=""> 
 	<link href="../css/datatables.css" rel="stylesheet" >
 	<link href="../css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="../css/font-awesome.css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
  	<link rel="stylesheet" href="../css/jquery-ui.css">
 
  	<style type="text/css">
@@ -32,16 +32,42 @@ $codProyecto = $_GET['codProyecto'];
 
 		.col10{
 			width: 10%;
+		} 
+
+		.top-right-fixed{
+			top: 0px;
+			right: 40px;
+			position: fixed;
+			width: 200px;
+			height: 50px; 
+			padding: 5px;
+		}
+
+		.padding{
+			padding-left: 8px;
+			padding-right: 8px;
+			padding-top: 5px;
+			padding-bottom: 5px;
 		}
  	</style>
 
 
 </head>
 <body>
+	<div style="margin-top: 30px;"></div>
 	<div class="container-fluid">
 		<div class="row">
-			<br>
+			<br> 
+			<div class="top-right-fixed">
+				<div class="panel panel-default pull-right padding">
+						<i class="fa fa-user" aria-hidden="true"></i>
+						<label id="lblUsuario"><?php echo $_SESSION['nombreUsuario'] ?></label> | 
+						<a href="../usuario/cerrar_sesion.php">salir</a>
+					 
+				</div>
+			</div>
 			<div class="col-lg-12  ">
+				
 				<div class="panel panel-default">
 				  <div class="panel-heading">
 				  	<div class="row">
@@ -68,10 +94,11 @@ $codProyecto = $_GET['codProyecto'];
 					    	Muestras de elementos
 					    	</a>
 					    </li>
-					    <li role="presentation">
+					    <!-- <li role="presentation">
 					    	<a href="#muestras" aria-controls="muestras" role="tab" data-toggle="tab">
 					    	Muestras de elementos
 					    	</a> 
+					    </li> -->
 					  </ul>
 
 					  <!-- Tab panes -->

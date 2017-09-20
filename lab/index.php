@@ -1,4 +1,10 @@
-<?php
+<?php 	
+session_start();	
+if ($_SESSION['iniciado'] == 0 || !isset($_SESSION['iniciado']) ) {
+	header('Location: login.php');
+} 
+
+echo $_SESSION['iniciado']; 
 
 include_once("../class/class_conexion.php");  
 $miConexion = new Conexion();
@@ -17,21 +23,49 @@ $miConexion = new Conexion();
     <meta name="author" content=""> 
 	<link href="../css/datatables.css" rel="stylesheet" >
 	<link href="../css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="../css/font-awesome.css">	
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">	
  	<link rel="stylesheet" href="../css/jquery-ui.css">
 
 	<style type="text/css">
 		.td-bkc{
 			background-color: #0088CC;
 		}
+
+		.top-right-fixed{
+			top: 0px;
+			right: 40px;
+			position: fixed;
+			width: 200px;
+			height: 50px; 
+			padding: 5px;
+		}
+
+		.padding{
+			padding-left: 8px;
+			padding-right: 8px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
 	</style>
 
 </head>
-<body>
+<body> 
+	<div style="margin-top: 30px;"></div>
 	<div class="container">
 		<div class="row">
-			<br>
+			<br> 
+			<div class="row">
+				<div class="top-right-fixed">
+					<div class="panel panel-default pull-right padding">
+							<i class="fa fa-user" aria-hidden="true"></i>
+							<label id="lblUsuario"><?php echo $_SESSION['nombreUsuario'] ?></label> | 
+							<a href="../usuario/cerrar_sesion.php">salir</a>
+						 
+					</div>
+				</div>
+			</div>
 			<div class="col-lg-10 col-lg-offset-1">
+				
 				<div class="panel panel-default">
 				  <div class="panel-heading">
 				  	<div class="row">
