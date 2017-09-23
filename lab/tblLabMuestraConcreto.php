@@ -2,20 +2,24 @@
 	//tbl_lab_muestra_concreto
 	//Resivirá un parametro de operación según o que se quiera hacer:
 	// 1. insertar, 2.modificar, 4. eliminar , 5. consultar
-	//recive string con los datos del objeto en formato json. 
-	include_once("../conexion.php"); 
-	// $jsonData = $_GET['jsonData'];
-	// $operacion = $_GET['operacion'];
+	//recive string con los datos del objeto en formato json.
+	include_once("../conexion.php");
 
-	
-	
-	$jsonData = 	 "{ "
+
+$operacion=$_GET["operacion"];
+$jsonData=$_GET["jsonData"];
+
+//Indicando zona Horaria:
+date_default_timezone_set('America/El_Salvador');
+
+/*
+$jsonData ="{ "
 				     .'"id_fecha_muestra": "12/10/17", '
 					 .'"id_n_viaje": "1", '
 					 .'"id_codigo_proyecto" : "S1702", '
 					 .'"elemento" : "elemento 45", '
-					 .'"cantidad_M3":"1", ' 
-					 .'"n_camion" :"2", '
+					 .'"cantidad_M3":"8", '
+					 .'"n_camion" :"mcm-01", '
 					 .'"hora_salida_en_planta":"10:00:00",'
 					 .'"hora_llegada_proyecto":"10:01:00", '
 					 .'"hora_salida_proyecto":"10:12:12", '
@@ -27,8 +31,10 @@
 					 .'"fecha_registro":"12/11/12", '
 					 .'"id_usuario":"alexander" '
 					 .'}';
-	
-	$operacion = 3;
+*/
+
+//Reemplazado la (') por la (") en el formato JSON:
+$jsonData = str_replace("'", "\"", $jsonData);
 
 	switch ($operacion) {
 		case '1':
@@ -39,7 +45,7 @@
 					 ."id_n_viaje, "
 					 ."id_codigo_proyecto, "
 					 ."elemento, "
-					 ."cantidad_M3, " 
+					 ."cantidad_M3, "
 					 ."n_camion, "
 					 ." hora_salida_en_planta,"
 					 ." hora_llegada_proyecto, "
@@ -56,7 +62,7 @@
 					 .$nuevoRegistro->{'id_n_viaje' }."', '"
 					 .$nuevoRegistro->{'id_codigo_proyecto' }."', '"
 					 .$nuevoRegistro->{'elemento' }."', '"
-					 .$nuevoRegistro->{'cantidad_M3' }."', '" 
+					 .$nuevoRegistro->{'cantidad_M3' }."', '"
 					 .$nuevoRegistro->{'n_camion' }."', '"
 					 .$nuevoRegistro->{'hora_salida_en_planta'}."', '"
 					 .$nuevoRegistro->{'hora_llegada_proyecto' }."', '"
@@ -66,18 +72,18 @@
 					 .$nuevoRegistro->{'aditivo_ml' }."', '"
 					 .$nuevoRegistro->{'fc_lbsPulg2' }."', '"
 					 .$nuevoRegistro->{'observaciones' }."', '"
-					 .$nuevoRegistro->{'fecha_registro' }."', '"
+					 .date('Y-m-d H:i:s' , time())."', '"
 					 .$nuevoRegistro->{'id_usuario' }."' )";
 
-			echo $insert;
+			//echo $insert;
 			$Result = getSQLResultSet($insert);
 			if ($Result == 1) {
-				echo "almacenado correctamente";
+				$msj[] = "almacenado correctamente";
 			}else
-				echo "no se almacenó el registro".$Result;
-			
-			break; 
-			 
+				$msj[] = "no se almacenó el registro";
+
+			break;
+
 		case '2':
 		//Modificar un registro de la tabla
 		//update tbl_lab_muestra_concreto set elemento = "un elemento" where id_fecha_muestra = "2012-10-17"
@@ -97,37 +103,48 @@
 					 ."aditivo_ml =  '".$nuevoRegistro->{'aditivo_ml' }."', "
 					 ."fc_lbsPulg2 =  '".$nuevoRegistro->{'fc_lbsPulg2' }."', "
 					 ." observaciones = '".$nuevoRegistro->{'observaciones' }."', "
-					 ."fecha_registro =  '".$nuevoRegistro->{'fecha_registro' }."', "
+					 ."fecha_registro =  '". date('Y-m-d H:i:s' , time()) ."', "
 					 ."id_usuario = '".$nuevoRegistro->{'id_usuario' }."' "
-					 ." where id_fecha_muestra = '".$nuevoRegistro->{'id_fecha_muestra' }."'";
+					 ." where id_codigo_proyecto = '".$nuevoRegistro->{'id_codigo_proyecto' }."'"
+					 ." and id_fecha_muestra = '".$nuevoRegistro->{'id_fecha_muestra' }."'"
+					 ." and elemento = '".$nuevoRegistro->{'elemento' }."'"
+					 ." and id_n_viaje = '".$nuevoRegistro->{'id_n_viaje' }."'";
 
-					  
-			echo $Update;
+
+			//echo $Update;
 			$Result = getSQLResultSet($Update);
+			//echo "RRRRRRRResult:" . $Result;
 			if ($Result == 1) {
-				echo "Actualilzado correctamente";
+				$msj[] = "Se Actualilzó el n de viaje: " . $nuevoRegistro->{'id_n_viaje'};
 			}else
-				echo "no se almacenó el registro".$Result;
-			
-			break; 
+				$msj[] = "No se actualizo el n de viaje: " . $nuevoRegistro->{'id_n_viaje'};
+
+			break;
 
 		case '3':
 			//eliminar un registro de la base de datos
-			//DELETE FROM `tbl_lab_muestra_concreto` WHERE id_fecha_muestra = 
+			//DELETE FROM `tbl_lab_muestra_concreto` WHERE id_fecha_muestra =
 			$nuevoRegistro = json_decode($jsonData);
-			$delete = "DELETE FROM tbl_lab_muestra_concreto WHERE id_fecha_muestra = '".$nuevoRegistro->{'id_fecha_muestra' }."'";
-			echo $delete;
+			$delete = "UPDATE tbl_lab_muestra_concreto
+								SET fecha_eliminado = '". date('Y-m-d H:i:s' , time()) . "'"
+							 ." where id_codigo_proyecto = '".$nuevoRegistro->{'id_codigo_proyecto' }."'"
+		 					 ." and id_fecha_muestra = '".$nuevoRegistro->{'id_fecha_muestra' }."'"
+		 					 ." and elemento = '".$nuevoRegistro->{'elemento' }."'"
+		 					 ." and id_n_viaje = '".$nuevoRegistro->{'id_n_viaje' }."'";
+			//echo $delete;
 			$Result = getSQLResultSet($delete);
 			if ($Result == 1) {
-				echo "se elimino";
+				$msj[] = "Se elimino el n de viaje: " . $nuevoRegistro->{'id_n_viaje'};
+			}else {
+				# code...
+				$msj[] = "No se eliminó el n de viaje: " . $nuevoRegistro->{'id_n_viaje'};
 			}
 			break;
 		default:
-			echo "Operacion desconocida";
+				$msj[] = "Operacion desconocida";
 			break;
-	} 
+	}
 
-
-
+	echo json_encode($msj);
 
 ?>
