@@ -3,7 +3,9 @@
 	//Resivirá un parametro de operación según o que se quiera hacer:
 	// 1. insertar, 2.modificar, 4. eliminar , 5. consultar
 	//recive string con los datos del objeto en formato json.
-	include_once("../conexion.php");
+	include_once("../class/class_conexion.php");
+
+	$conexion = new Conexion();
 
 
 $operacion=$_GET["operacion"];
@@ -14,8 +16,8 @@ date_default_timezone_set('America/El_Salvador');
 
 /*
 $jsonData ="{ "
-				     .'"id_fecha_muestra": "12/10/17", '
-					 .'"id_n_viaje": "1", '
+				     .'"id_fecha_muestra": "10/10/17", '
+					 .'"id_n_viaje": "Se asignará al guardar", '
 					 .'"id_codigo_proyecto" : "S1702", '
 					 .'"elemento" : "elemento 45", '
 					 .'"cantidad_M3":"8", '
@@ -31,15 +33,28 @@ $jsonData ="{ "
 					 .'"fecha_registro":"12/11/12", '
 					 .'"id_usuario":"alexander" '
 					 .'}';
+$operacion = 1;
 */
 
 //Reemplazado la (') por la (") en el formato JSON:
 $jsonData = str_replace("'", "\"", $jsonData);
 
 	switch ($operacion) {
+
 		case '1':
 			//insertar el objeto en la tabla tbl_lab_muestra_concreto
 			$nuevoRegistro = json_decode($jsonData);
+
+			$select = "SELECT MAX(id_n_viaje) as id_n_viaje
+								FROM tbl_lab_muestra_concreto
+								WHERE id_codigo_proyecto = '". $nuevoRegistro->{'id_codigo_proyecto' } . "'"
+								."	and id_fecha_muestra = '". $nuevoRegistro->{'id_fecha_muestra' } . "'";
+
+			$Result = $conexion->ejecutarInstruccion($select);
+			while ($fila = $conexion->obtenerFila($Result)){
+				 $id_n_viajeMas1 = $fila['id_n_viaje'] + 1;
+			}
+
 			$insert = "insert into tbl_lab_muestra_concreto ( "
 					 ."id_fecha_muestra, "
 					 ."id_n_viaje, "
@@ -59,7 +74,7 @@ $jsonData = str_replace("'", "\"", $jsonData);
 					 ."id_usuario ) "
 					 ."values ( '"
 					 .$nuevoRegistro->{'id_fecha_muestra' }."', '"
-					 .$nuevoRegistro->{'id_n_viaje' }."', '"
+					 .$id_n_viajeMas1."', '"
 					 .$nuevoRegistro->{'id_codigo_proyecto' }."', '"
 					 .$nuevoRegistro->{'elemento' }."', '"
 					 .$nuevoRegistro->{'cantidad_M3' }."', '"
@@ -76,11 +91,11 @@ $jsonData = str_replace("'", "\"", $jsonData);
 					 .$nuevoRegistro->{'id_usuario' }."' )";
 
 			//echo $insert;
-			$Result = getSQLResultSet($insert);
+			$Result = $conexion->ejecutarInstruccion($insert);
 			if ($Result == 1) {
-				$msj[] = "almacenado correctamente";
+				$msj[] = "Se Guardó el viaje: " . $id_n_viajeMas1;
 			}else
-				$msj[] = "no se almacenó el registro";
+				$msj[] = "No se guradó. Ya existe el viaje". $id_n_viajeMas1;
 
 			break;
 
@@ -112,12 +127,11 @@ $jsonData = str_replace("'", "\"", $jsonData);
 
 
 			//echo $Update;
-			$Result = getSQLResultSet($Update);
-			//echo "RRRRRRRResult:" . $Result;
+			$Result = $conexion->ejecutarInstruccion($Update);
 			if ($Result == 1) {
-				$msj[] = "Se Actualilzó el n de viaje: " . $nuevoRegistro->{'id_n_viaje'};
+				$msj[] = "Se Guardaron los cambios del viaje: " . $nuevoRegistro->{'id_n_viaje'};
 			}else
-				$msj[] = "No se actualizo el n de viaje: " . $nuevoRegistro->{'id_n_viaje'};
+				$msj[] = "No se guardaron los cambios del viaje: " . $nuevoRegistro->{'id_n_viaje'};
 
 			break;
 
@@ -132,12 +146,12 @@ $jsonData = str_replace("'", "\"", $jsonData);
 		 					 ." and elemento = '".$nuevoRegistro->{'elemento' }."'"
 		 					 ." and id_n_viaje = '".$nuevoRegistro->{'id_n_viaje' }."'";
 			//echo $delete;
-			$Result = getSQLResultSet($delete);
+			$Result = $conexion->ejecutarInstruccion($delete);
 			if ($Result == 1) {
-				$msj[] = "Se elimino el n de viaje: " . $nuevoRegistro->{'id_n_viaje'};
+				$msj[] = "Se Eliminó el viaje: " . $nuevoRegistro->{'id_n_viaje'};
 			}else {
 				# code...
-				$msj[] = "No se eliminó el n de viaje: " . $nuevoRegistro->{'id_n_viaje'};
+				$msj[] = "No se eliminó el viaje: " . $nuevoRegistro->{'id_n_viaje'};
 			}
 			break;
 		default:
