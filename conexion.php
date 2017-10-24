@@ -8,7 +8,7 @@
 
   function ejecutarSQLCommand($commando){
     $mysqli = new mysqli($GLOBALS['localhost'], $GLOBALS['usuario_db'], $GLOBALS['contrasena_db'], $GLOBALS['base_datos']);
-
+    mysqli_set_charset($mysqli,"utf8");
     /* check connection */
     if ($mysqli->connect_errno) {
         printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -29,6 +29,7 @@
   function getSQLResultSet($commando){
 
     $mysqli = new mysqli($GLOBALS['localhost'], $GLOBALS['usuario_db'], $GLOBALS['contrasena_db'], $GLOBALS['base_datos']);
+      mysqli_set_charset($mysqli,"utf8");
     /* check connection */
     if ($mysqli->connect_errno) {
         printf("Connect failed: %s\n", $mysqli->connect_error);

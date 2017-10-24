@@ -11,13 +11,13 @@
 		private $tildes;
 
 		public function __construct(){
-			$this->establecerConexion();			
+			$this->establecerConexion();
 		}
 
 		public function establecerConexion(){
 
 			$this->link = mysqli_connect($this->host, $this->usuario, $this->contrasena, $this->baseDatos, $this->puerto);
-
+			mysqli_set_charset($this->link,"utf8");
 			if (!$this->link){
 				echo "No se pudo conectar con mysql";
 				exit;
@@ -34,7 +34,7 @@
 			mysqli_close($this->link);
 		}
 
-		public function ejecutarInstruccion($sql){  
+		public function ejecutarInstruccion($sql){
 			return mysqli_query($this->link, $sql);
 		}
 
