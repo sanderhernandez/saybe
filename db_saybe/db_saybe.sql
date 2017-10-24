@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-09-2017 a las 09:43:04
+-- Tiempo de generación: 25-10-2017 a las 00:05:53
 -- Versión del servidor: 10.1.25-MariaDB
 -- Versión de PHP: 5.6.31
 
@@ -41,6 +41,80 @@ CREATE TABLE `tbl_cliente` (
 INSERT INTO `tbl_cliente` (`id_cliente`, `nombre_cliente`, `fecha_registro`) VALUES
 (1, 'Alcaldía Municipal del Distrito Central', '2017-08-09 20:09:00'),
 (2, 'Universidad Nacional Autónoma de Honduras', '2017-08-09 20:10:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbl_elemento`
+--
+
+CREATE TABLE `tbl_elemento` (
+  `id_elemento` int(10) NOT NULL,
+  `id_codigo_proyecto` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
+  `elemento` varchar(255) COLLATE utf8_spanish2_ci NOT NULL,
+  `fecha_registro` datetime NOT NULL,
+  `id_usuario_registro` varchar(30) COLLATE utf8_spanish2_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tbl_elemento`
+--
+
+INSERT INTO `tbl_elemento` (`id_elemento`, `id_codigo_proyecto`, `elemento`, `fecha_registro`, `id_usuario_registro`) VALUES
+(1, 'S1702', 'Pavimento de concreto hidraulico Est 0+302.53 - 0+384.24 II Carril lado Izq', '2017-08-12 00:00:00', 'richard'),
+(2, 'S1704', 'Muro Ciclopeo', '2017-10-14 10:29:41', 'hugo'),
+(3, 'S1702', 'Pavimento concreto hidraulico', '2017-08-12 00:00:00', 'richard'),
+(4, 'S1704', 'elemento 45', '2017-09-26 15:20:31', 'hugo'),
+(5, 'S1704', 'Pavimento concreto hidráulico', '2017-09-25 14:30:43', 'hugo'),
+(6, 'S1702', 'elemento 45', '2017-09-25 14:52:28', 'alexander');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbl_equipo_computo`
+--
+
+CREATE TABLE `tbl_equipo_computo` (
+  `id_equipo_computo` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
+  `tarjeta_grafica` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `sistema_operativo` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
+  `asignada_a` varchar(15) COLLATE utf8_spanish2_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbl_equipo_computo_procesador`
+--
+
+CREATE TABLE `tbl_equipo_computo_procesador` (
+  `id_procesardor` int(10) NOT NULL,
+  `marca` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
+  `tipo` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
+  `modelo` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
+  `frecuencia` varchar(30) COLLATE utf8_spanish2_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tbl_equipo_computo_procesador`
+--
+
+INSERT INTO `tbl_equipo_computo_procesador` (`id_procesardor`, `marca`, `tipo`, `modelo`, `frecuencia`) VALUES
+(1, 'Intel', 'i7', ' 4790', '3.60 GHz');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbl_equipo_computo_ram`
+--
+
+CREATE TABLE `tbl_equipo_computo_ram` (
+  `id_ram` int(10) NOT NULL,
+  `id_equipo` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
+  `capacidad_GB` int(10) NOT NULL,
+  `tipo` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
+  `fecuencia_MHz` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 -- --------------------------------------------------------
 
@@ -119,27 +193,6 @@ INSERT INTO `tbl_lab_cilindro_viga_muestra_concreto` (`id_n_cilindro_viga`, `tip
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbl_lab_laboratorista_x_muestra`
---
-
-CREATE TABLE `tbl_lab_laboratorista_x_muestra` (
-  `id_usuario` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
-  `id_fecha_muestra` date NOT NULL,
-  `id_codigo_proyecto` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `fecha_registro` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
---
--- Volcado de datos para la tabla `tbl_lab_laboratorista_x_muestra`
---
-
-INSERT INTO `tbl_lab_laboratorista_x_muestra` (`id_usuario`, `id_fecha_muestra`, `id_codigo_proyecto`, `fecha_registro`) VALUES
-('richard', '2017-01-30', 'S1702', '2017-09-14 00:00:00'),
-('richard', '2017-01-31', 'S1702', '2017-09-14 00:00:00');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `tbl_lab_muestra_concreto`
 --
 
@@ -147,7 +200,7 @@ CREATE TABLE `tbl_lab_muestra_concreto` (
   `id_fecha_muestra` date NOT NULL,
   `id_n_viaje` int(10) NOT NULL,
   `id_codigo_proyecto` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `elemento` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `id_elemento` int(10) NOT NULL,
   `cantidad_M3` int(10) DEFAULT NULL,
   `n_camion` varchar(10) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `hora_salida_en_planta` time DEFAULT NULL,
@@ -167,35 +220,70 @@ CREATE TABLE `tbl_lab_muestra_concreto` (
 -- Volcado de datos para la tabla `tbl_lab_muestra_concreto`
 --
 
-INSERT INTO `tbl_lab_muestra_concreto` (`id_fecha_muestra`, `id_n_viaje`, `id_codigo_proyecto`, `elemento`, `cantidad_M3`, `n_camion`, `hora_salida_en_planta`, `hora_llegada_proyecto`, `hora_salida_proyecto`, `temperatura`, `rev_pulg`, `aditivo_ml`, `fc_lbsPulg2`, `observaciones`, `fecha_registro`, `fecha_eliminado`, `id_usuario`) VALUES
-('2017-01-01', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-01', 1, 'S1704', 'Muro Ciclopeo', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-01', 2, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-02', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-03', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-04', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-05', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-06', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-07', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-08', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-09', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-10', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 1, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 2, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-02', '12:52:00', '13:14:00', '13:28:00', 26.3, 5, 0, 650, 'Pav. lado izq. 37709', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 3, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-03', '13:44:00', '13:58:00', '14:30:00', 26.1, 7, 0, 650, 'Pav. lado izq. 37704', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 4, 'S1702', 'Pavimento concreto hidraulico', 3, 'cmc-04', '14:03:00', '14:20:00', '14:42:00', 25.7, 6.75, 0, 650, 'Pav. lado izq. 37713', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 5, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '14:16:00', '14:27:00', '15:00:00', 26.9, 5.5, 0, 650, 'Pav. lado izq. 37715', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 6, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-02', '14:39:00', '14:54:00', '15:21:00', 26.9, 4.5, 0, 650, 'Pav. lado izq. 37716', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 7, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-03', '15:07:00', '15:22:00', '16:12:00', 27, 4, 4000, 650, 'Pav. lado izq. 37717', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 8, 'S1702', 'Pavimento concreto hidraulico', 3, 'cmc-04', '15:27:00', '15:45:00', '16:34:00', 25.8, 4.25, 2000, 650, 'Pav. lado izq. 37718', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 9, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-01', '15:51:00', '16:00:00', '17:00:00', 25, 5, 2000, 650, 'Pav. lado izq. 37719', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-30', 10, 'S1702', 'Pavimento concreto hidraulico', 8, 'cmc-02', '16:11:00', '16:25:00', '17:20:00', 25.1, 3.25, 0, 650, 'Pav. lado izq. 37720', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-31', 1, 'S1702', 'Pavimento de concreto hidraulico Est 0+302.53 - 0+384.24 II Carril lado Izq', 7, 'cmc-03', '10:18:00', '10:54:00', '01:05:00', 26.2, 5, NULL, 650, 'Pav. lado izq. hacia America 37735', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-31', 2, 'S1702', 'Pavimento de concreto hidraulico Est 0+302.53 - 0+384.24 II Carril lado Izq', 7, 'cmc-01', '10:57:00', '11:54:00', '11:26:00', 26.5, 6, NULL, 650, 'Pav. lado izq. hacia America 37736', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-31', 3, 'S1702', 'Pavimento de concreto hidraulico Est 0+302.53 - 0+384.24 II Carril lado Izq', 7, 'cmc-02', '11:44:00', '12:02:00', '12:20:00', 27, 5.25, NULL, 650, 'Pav. lado izq. hacia America 37746', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-31', 4, 'S1702', 'Pavimento de concreto hidraulico Est 0+302.53 - 0+384.24 II Carril lado Izq', 8, 'cmc-03', '12:17:00', '12:30:00', '13:00:00', 26.1, 5, NULL, 650, 'Pav. lado izq. hacia America 37747', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-31', 5, 'S1702', 'Pavimento de concreto hidraulico Est 0+302.53 - 0+384.24 II Carril lado Izq', 8, 'cmc-01', '13:21:00', '13:30:00', '13:50:00', 26.2, 6.5, NULL, 650, 'Pav. lado izq. hacia America 37749', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
-('2017-01-31', 6, 'S1702', 'Pavimento de concreto hidraulico Est 0+302.53 - 0+384.24 II Carril lado Izq', 8, 'cmc-02', '13:33:00', '13:45:00', '14:20:00', 26.8, 5, NULL, 650, 'Pav. lado izq. hacia America 37750', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard');
+INSERT INTO `tbl_lab_muestra_concreto` (`id_fecha_muestra`, `id_n_viaje`, `id_codigo_proyecto`, `id_elemento`, `cantidad_M3`, `n_camion`, `hora_salida_en_planta`, `hora_llegada_proyecto`, `hora_salida_proyecto`, `temperatura`, `rev_pulg`, `aditivo_ml`, `fc_lbsPulg2`, `observaciones`, `fecha_registro`, `fecha_eliminado`, `id_usuario`) VALUES
+('2010-10-17', 1, 'S1702', 6, 8, 'mcm-01', '10:00:00', '10:01:00', '10:12:12', 12, 12, 123, 45, 'alguna cosa que observar', '2017-09-25 14:42:43', '0000-00-00 00:00:00', 'alexander'),
+('2010-10-17', 2, 'S1702', 6, 8, 'mcm-01', '10:00:00', '10:01:00', '10:12:12', 12, 12, 123, 45, 'alguna cosa que observar', '2017-09-25 14:43:13', '0000-00-00 00:00:00', 'alexander'),
+('2010-10-17', 3, 'S1702', 6, 8, 'mcm-01', '10:00:00', '10:01:00', '10:12:12', 12, 12, 123, 45, 'alguna cosa que observar', '2017-09-25 14:45:39', '0000-00-00 00:00:00', 'alexander'),
+('2010-10-17', 4, 'S1702', 6, 8, 'mcm-01', '10:00:00', '10:01:00', '10:12:12', 12, 12, 123, 45, 'alguna cosa que observar', '2017-09-25 14:48:50', '0000-00-00 00:00:00', 'alexander'),
+('2010-10-17', 5, 'S1702', 6, 8, 'mcm-01', '10:00:00', '10:01:00', '10:12:12', 12, 12, 123, 45, 'alguna cosa que observar', '2017-09-25 14:49:06', '0000-00-00 00:00:00', 'alexander'),
+('2010-10-17', 6, 'S1702', 6, 8, 'mcm-01', '10:00:00', '10:01:00', '10:12:12', 12, 12, 123, 45, 'alguna cosa que observar', '2017-09-25 14:52:28', '0000-00-00 00:00:00', 'alexander'),
+('2012-10-17', 1, 'S1704', 4, 8, 'mcm-01', '10:00:00', '10:01:00', '10:12:12', 12, 12, 123, 45, 'alguna cosa que observar', '2017-09-23 11:46:46', '0000-00-00 00:00:00', 'alexander'),
+('2012-10-17', 8, 'S1704', 5, 8, 'cmc-02', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, 'observaciones', '2017-09-25 14:30:43', '0000-00-00 00:00:00', 'hugo'),
+('2012-10-17', 9, 'S1704', 4, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-09-26 15:20:31', '0000-00-00 00:00:00', 'hugo'),
+('2012-10-17', 10, 'S1704', 2, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 14:04:10', '0000-00-00 00:00:00', 'hugo'),
+('2012-10-17', 10, 'S1704', 4, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 09:54:54', '0000-00-00 00:00:00', 'hugo'),
+('2012-10-17', 11, 'S1704', 4, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 09:57:16', '0000-00-00 00:00:00', 'hugo'),
+('2012-10-17', 11, 'S1704', 5, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 09:20:16', '0000-00-00 00:00:00', 'hugo'),
+('2012-10-17', 12, 'S1704', 2, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 14:05:55', '0000-00-00 00:00:00', 'hugo'),
+('2012-10-17', 12, 'S1704', 4, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 09:57:26', '0000-00-00 00:00:00', 'hugo'),
+('2012-10-17', 12, 'S1704', 5, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 09:54:31', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-01', 1, 'S1704', 2, 8, 'cmc-03', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-10-14 10:28:57', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 2, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-01', 2, 'S1704', 2, 8, 'cmc-10', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-09-25 15:00:13', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 3, 'S1702', 1, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 14:09:25', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 3, 'S1702', 3, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 14:20:14', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 3, 'S1704', 2, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-14 10:29:09', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 4, 'S1704', 2, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-09-25 15:00:49', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 5, 'S1704', 2, 8, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 11:04:58', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 6, 'S1704', 2, 7, '', '07:30:00', '00:00:07', '00:00:00', 0, 0, 0, 0, '', '2017-10-19 10:56:13', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 7, 'S1704', 2, 7, 'cmc_01', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, 'alksdlkahldk', '2017-10-20 09:53:28', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 8, 'S1704', 5, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 09:53:48', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 9, 'S1704', 5, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 13:36:48', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 10, 'S1704', 4, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 10:02:17', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 11, 'S1704', 4, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 10:08:55', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 12, 'S1704', 5, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 11:04:38', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 13, 'S1704', 2, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 11:05:43', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-01', 14, 'S1704', 5, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-20 13:36:59', '0000-00-00 00:00:00', 'hugo'),
+('2017-01-02', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-03', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-04', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-05', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-06', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-07', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-08', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-09', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-10', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 1, 'S1702', 3, 8, 'cmc-01', '12:15:00', '12:30:00', '12:56:00', 26.1, 2.5, 2000, 650, 'Pav. lado izq. 37707 inicio popeyes', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 2, 'S1702', 3, 8, 'cmc-02', '12:52:00', '13:14:00', '13:28:00', 26.3, 5, 0, 650, 'Pav. lado izq. 37709', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 3, 'S1702', 3, 8, 'cmc-03', '13:44:00', '13:58:00', '14:30:00', 26.1, 7, 0, 650, 'Pav. lado izq. 37704', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 4, 'S1702', 3, 3, 'cmc-04', '14:03:00', '14:20:00', '14:42:00', 25.7, 6.75, 0, 650, 'Pav. lado izq. 37713', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 5, 'S1702', 3, 8, 'cmc-01', '14:16:00', '14:27:00', '15:00:00', 26.9, 5.5, 0, 650, 'Pav. lado izq. 37715', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 6, 'S1702', 3, 8, 'cmc-02', '14:39:00', '14:54:00', '15:21:00', 26.9, 4.5, 0, 650, 'Pav. lado izq. 37716', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 7, 'S1702', 3, 8, 'cmc-03', '15:07:00', '15:22:00', '16:12:00', 27, 4, 4000, 650, 'Pav. lado izq. 37717', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 8, 'S1702', 3, 3, 'cmc-04', '15:27:00', '15:45:00', '16:34:00', 25.8, 4.25, 2000, 650, 'Pav. lado izq. 37718', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 9, 'S1702', 3, 8, 'cmc-01', '15:51:00', '16:00:00', '17:00:00', 25, 5, 2000, 650, 'Pav. lado izq. 37719', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-30', 10, 'S1702', 3, 8, 'cmc-02', '16:11:00', '16:25:00', '17:20:00', 25.1, 3.25, 0, 650, 'Pav. lado izq. 37720', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-31', 1, 'S1702', 1, 7, 'cmc-03', '10:18:00', '10:54:00', '01:05:00', 26.2, 5, NULL, 650, 'Pav. lado izq. hacia America 37735', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-31', 2, 'S1702', 1, 7, 'cmc-01', '10:57:00', '11:54:00', '11:26:00', 26.5, 6, NULL, 650, 'Pav. lado izq. hacia America 37736', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-31', 3, 'S1702', 1, 7, 'cmc-02', '11:44:00', '12:02:00', '12:20:00', 27, 5.25, NULL, 650, 'Pav. lado izq. hacia America 37746', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-31', 4, 'S1702', 1, 8, 'cmc-03', '12:17:00', '12:30:00', '13:00:00', 26.1, 5, NULL, 650, 'Pav. lado izq. hacia America 37747', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-31', 5, 'S1702', 1, 8, 'cmc-01', '13:21:00', '13:30:00', '13:50:00', 26.2, 6.5, NULL, 650, 'Pav. lado izq. hacia America 37749', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-01-31', 6, 'S1702', 1, 8, 'cmc-02', '13:33:00', '13:45:00', '14:20:00', 26.8, 5, NULL, 650, 'Pav. lado izq. hacia America 37750', '2017-08-12 00:00:00', '0000-00-00 00:00:00', 'richard'),
+('2017-09-23', 1, 'S1704', 2, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 09:18:17', '0000-00-00 00:00:00', 'hugo'),
+('2017-10-23', 1, 'S1702', 6, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-23 15:16:18', '0000-00-00 00:00:00', 'hugo'),
+('2017-10-23', 1, 'S1704', 2, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 10:07:22', '0000-00-00 00:00:00', 'hugo'),
+('2017-10-24', 1, 'S1704', 2, 0, '', '00:00:00', '00:00:00', '00:00:00', 0, 0, 0, 0, '', '2017-10-24 10:06:34', '0000-00-00 00:00:00', 'hugo');
 
 -- --------------------------------------------------------
 
@@ -272,8 +360,8 @@ CREATE TABLE `tbl_proyecto` (
 
 INSERT INTO `tbl_proyecto` (`id_codigo_proyecto`, `id_cliente`, `nombre_proyecto`, `nombre_proyecto_abreviado`, `ubicacion`, `fecha_inicio`, `fecha_fin`, `fecha_registro`, `activo`) VALUES
 ('S1608', 2, 'Construcción Edificio 1847, Ciudad Universitaria', '1847', 'Tegucigalpa, Francisco morazán', NULL, NULL, '2017-08-09 20:45:00', 1),
-('S1702', 1, 'Construcción Paso a Desnivel Acceso a Col. América - Bulevar Económica Europea', 'PAD Acceso a Col. America', 'Frente a la Entrada de la Colonia América, Blv. Comunidad Económica europea', NULL, NULL, '2017-08-10 09:50:00', 1),
-('S1704', 1, 'Construcción de conexión y Ampliación a dos carriles(Doble sentido) Vía rápida Aeropuerto y obras complementarias', 'Via rapido CAMOSA', NULL, NULL, NULL, '2017-08-09 20:39:00', 1);
+('S1702', 1, 'Construcción Paso a Desnivel Acceso a Col. América - Bulevar Económica Europea', 'PAD Acceso a Col. América', 'Frente a la Entrada de la Colonia América, Blv. Comunidad Económica europea', NULL, NULL, '2017-08-10 09:50:00', 1),
+('S1704', 1, 'Construcción de conexión y Ampliación a dos carriles(Doble sentido) Vía rápida Aeropuerto y obras complementarias', 'Via rápida CAMOSA', NULL, NULL, NULL, '2017-08-09 20:39:00', 1);
 
 -- --------------------------------------------------------
 
@@ -303,6 +391,28 @@ INSERT INTO `tbl_usuario` (`id_usuario`, `id_identidad`, `contrasena`, `fecha_re
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tbl_usuarios_x_procesos_laborales`
+--
+
+CREATE TABLE `tbl_usuarios_x_procesos_laborales` (
+  `id_usuario` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
+  `id_fecha` date NOT NULL,
+  `id_codigo_proyecto` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
+  `id_elemento` int(10) NOT NULL,
+  `fecha_registro` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tbl_usuarios_x_procesos_laborales`
+--
+
+INSERT INTO `tbl_usuarios_x_procesos_laborales` (`id_usuario`, `id_fecha`, `id_codigo_proyecto`, `id_elemento`, `fecha_registro`) VALUES
+('richard', '2017-01-30', 'S1702', 3, '2017-09-14 00:00:00'),
+('richard', '2017-01-31', 'S1702', 1, '2017-09-14 00:00:00');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tbl_usuario_x_grupo_usuario_x_proyecto`
 --
 
@@ -324,6 +434,7 @@ INSERT INTO `tbl_usuario_x_grupo_usuario_x_proyecto` (`id_usuario`, `id_grupo_us
 ('hugo', 1, 'S1702', '2017-08-09 00:00:00', 1),
 ('hugo', 1, 'S1704', '2017-08-09 00:00:00', 1),
 ('luiscolindres', 1, 'S1702', '2017-08-25 09:49:00', 1),
+('richard', 1, 'S1702', '2017-08-09 00:00:00', 1),
 ('wilmer', 1, 'S1704', '2017-08-10 00:00:00', 1);
 
 --
@@ -335,6 +446,26 @@ INSERT INTO `tbl_usuario_x_grupo_usuario_x_proyecto` (`id_usuario`, `id_grupo_us
 --
 ALTER TABLE `tbl_cliente`
   ADD PRIMARY KEY (`id_cliente`);
+
+--
+-- Indices de la tabla `tbl_elemento`
+--
+ALTER TABLE `tbl_elemento`
+  ADD PRIMARY KEY (`id_elemento`,`id_codigo_proyecto`) USING BTREE,
+  ADD KEY `id_codigo_proyecto` (`id_codigo_proyecto`),
+  ADD KEY `id_usuario_registro` (`id_usuario_registro`);
+
+--
+-- Indices de la tabla `tbl_equipo_computo_procesador`
+--
+ALTER TABLE `tbl_equipo_computo_procesador`
+  ADD PRIMARY KEY (`id_procesardor`);
+
+--
+-- Indices de la tabla `tbl_equipo_computo_ram`
+--
+ALTER TABLE `tbl_equipo_computo_ram`
+  ADD PRIMARY KEY (`id_ram`);
 
 --
 -- Indices de la tabla `tbl_grupo_usuario`
@@ -354,21 +485,13 @@ ALTER TABLE `tbl_lab_cilindro_viga_muestra_concreto`
   ADD KEY `id_usuario` (`id_usuario`) USING BTREE;
 
 --
--- Indices de la tabla `tbl_lab_laboratorista_x_muestra`
---
-ALTER TABLE `tbl_lab_laboratorista_x_muestra`
-  ADD PRIMARY KEY (`id_usuario`,`id_fecha_muestra`,`id_codigo_proyecto`),
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_fecha_muestra` (`id_fecha_muestra`),
-  ADD KEY `id_codigo_proyecto` (`id_codigo_proyecto`);
-
---
 -- Indices de la tabla `tbl_lab_muestra_concreto`
 --
 ALTER TABLE `tbl_lab_muestra_concreto`
-  ADD PRIMARY KEY (`id_fecha_muestra`,`id_n_viaje`,`id_codigo_proyecto`) USING BTREE,
+  ADD PRIMARY KEY (`id_fecha_muestra`,`id_n_viaje`,`id_codigo_proyecto`,`id_elemento`) USING BTREE,
   ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_codigo_proyecto` (`id_codigo_proyecto`);
+  ADD KEY `id_codigo_proyecto` (`id_codigo_proyecto`),
+  ADD KEY `id_elemento` (`id_elemento`);
 
 --
 -- Indices de la tabla `tbl_permiso`
@@ -398,6 +521,16 @@ ALTER TABLE `tbl_usuario`
   ADD KEY `id_identidad` (`id_identidad`);
 
 --
+-- Indices de la tabla `tbl_usuarios_x_procesos_laborales`
+--
+ALTER TABLE `tbl_usuarios_x_procesos_laborales`
+  ADD PRIMARY KEY (`id_usuario`,`id_fecha`,`id_codigo_proyecto`,`id_elemento`),
+  ADD KEY `id_elemento` (`id_elemento`),
+  ADD KEY `id_codigo_proyecto` (`id_codigo_proyecto`),
+  ADD KEY `id_fecha` (`id_fecha`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
 -- Indices de la tabla `tbl_usuario_x_grupo_usuario_x_proyecto`
 --
 ALTER TABLE `tbl_usuario_x_grupo_usuario_x_proyecto`
@@ -416,6 +549,21 @@ ALTER TABLE `tbl_usuario_x_grupo_usuario_x_proyecto`
 ALTER TABLE `tbl_cliente`
   MODIFY `id_cliente` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT de la tabla `tbl_elemento`
+--
+ALTER TABLE `tbl_elemento`
+  MODIFY `id_elemento` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT de la tabla `tbl_equipo_computo_procesador`
+--
+ALTER TABLE `tbl_equipo_computo_procesador`
+  MODIFY `id_procesardor` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `tbl_equipo_computo_ram`
+--
+ALTER TABLE `tbl_equipo_computo_ram`
+  MODIFY `id_ram` int(10) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT de la tabla `tbl_grupo_usuario`
 --
 ALTER TABLE `tbl_grupo_usuario`
@@ -430,6 +578,13 @@ ALTER TABLE `tbl_permiso`
 --
 
 --
+-- Filtros para la tabla `tbl_elemento`
+--
+ALTER TABLE `tbl_elemento`
+  ADD CONSTRAINT `tbl_elemento_ibfk_1` FOREIGN KEY (`id_usuario_registro`) REFERENCES `tbl_usuario` (`id_usuario`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_elemento_ibfk_2` FOREIGN KEY (`id_codigo_proyecto`) REFERENCES `tbl_proyecto` (`id_codigo_proyecto`) ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `tbl_lab_cilindro_viga_muestra_concreto`
 --
 ALTER TABLE `tbl_lab_cilindro_viga_muestra_concreto`
@@ -438,19 +593,12 @@ ALTER TABLE `tbl_lab_cilindro_viga_muestra_concreto`
   ADD CONSTRAINT `tbl_lab_cilindro_viga_muestra_concreto_ibfk_4` FOREIGN KEY (`id_usuario`) REFERENCES `tbl_usuario` (`id_usuario`) ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `tbl_lab_laboratorista_x_muestra`
---
-ALTER TABLE `tbl_lab_laboratorista_x_muestra`
-  ADD CONSTRAINT `tbl_lab_laboratorista_x_muestra_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `tbl_usuario` (`id_usuario`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_lab_laboratorista_x_muestra_ibfk_2` FOREIGN KEY (`id_fecha_muestra`) REFERENCES `tbl_lab_muestra_concreto` (`id_fecha_muestra`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_lab_laboratorista_x_muestra_ibfk_3` FOREIGN KEY (`id_codigo_proyecto`) REFERENCES `tbl_proyecto` (`id_codigo_proyecto`) ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `tbl_lab_muestra_concreto`
 --
 ALTER TABLE `tbl_lab_muestra_concreto`
   ADD CONSTRAINT `tbl_lab_muestra_concreto_ibfk_1` FOREIGN KEY (`id_codigo_proyecto`) REFERENCES `tbl_proyecto` (`id_codigo_proyecto`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_lab_muestra_concreto_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `tbl_usuario` (`id_usuario`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `tbl_lab_muestra_concreto_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `tbl_usuario` (`id_usuario`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_lab_muestra_concreto_ibfk_3` FOREIGN KEY (`id_elemento`) REFERENCES `tbl_elemento` (`id_elemento`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tbl_permiso`
@@ -469,6 +617,15 @@ ALTER TABLE `tbl_proyecto`
 --
 ALTER TABLE `tbl_usuario`
   ADD CONSTRAINT `tbl_usuario_ibfk_1` FOREIGN KEY (`id_identidad`) REFERENCES `tbl_persona` (`id_identidad`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `tbl_usuarios_x_procesos_laborales`
+--
+ALTER TABLE `tbl_usuarios_x_procesos_laborales`
+  ADD CONSTRAINT `tbl_usuarios_x_procesos_laborales_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `tbl_usuario` (`id_usuario`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_usuarios_x_procesos_laborales_ibfk_2` FOREIGN KEY (`id_codigo_proyecto`) REFERENCES `tbl_proyecto` (`id_codigo_proyecto`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_usuarios_x_procesos_laborales_ibfk_3` FOREIGN KEY (`id_elemento`) REFERENCES `tbl_elemento` (`id_elemento`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_usuarios_x_procesos_laborales_ibfk_4` FOREIGN KEY (`id_fecha`) REFERENCES `tbl_lab_muestra_concreto` (`id_fecha_muestra`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tbl_usuario_x_grupo_usuario_x_proyecto`
