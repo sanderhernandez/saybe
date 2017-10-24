@@ -11,7 +11,7 @@ $c=0;
 
 $query = "SELECT *
 	FROM `tbl_lab_muestra_concreto` as m
-	WHERE m.id_codigo_proyecto = '" . $id_codigo_proyecto . "' and " . "m.id_fecha_muestra = '" . $id_fecha_muestra . "' and " . "m.elemento = '" . $elemento
+	WHERE m.id_codigo_proyecto = '" . $id_codigo_proyecto . "' and " . "m.id_fecha_muestra = '" . $id_fecha_muestra . "' and " . "m.id_elemento = '" . $elemento
 	. "' ORDER BY m.id_n_viaje ASC";
 
 	if($resultset=getSQLResultSet($query)){

@@ -48,6 +48,7 @@ $jsonData = str_replace("'", "\"", $jsonData);
 			$select = "SELECT MAX(id_n_viaje) as id_n_viaje
 								FROM tbl_lab_muestra_concreto
 								WHERE id_codigo_proyecto = '". $nuevoRegistro->{'id_codigo_proyecto' } . "'"
+								."	and id_elemento = '". $nuevoRegistro->{'id_elemento' } . "'"
 								."	and id_fecha_muestra = '". $nuevoRegistro->{'id_fecha_muestra' } . "'";
 
 			$Result = $conexion->ejecutarInstruccion($select);
@@ -59,7 +60,7 @@ $jsonData = str_replace("'", "\"", $jsonData);
 					 ."id_fecha_muestra, "
 					 ."id_n_viaje, "
 					 ."id_codigo_proyecto, "
-					 ."elemento, "
+					 ."id_elemento, "
 					 ."cantidad_M3, "
 					 ."n_camion, "
 					 ." hora_salida_en_planta,"
@@ -76,7 +77,7 @@ $jsonData = str_replace("'", "\"", $jsonData);
 					 .$nuevoRegistro->{'id_fecha_muestra' }."', '"
 					 .$id_n_viajeMas1."', '"
 					 .$nuevoRegistro->{'id_codigo_proyecto' }."', '"
-					 .$nuevoRegistro->{'elemento' }."', '"
+					 .$nuevoRegistro->{'id_elemento' }."', '"
 					 .$nuevoRegistro->{'cantidad_M3' }."', '"
 					 .$nuevoRegistro->{'n_camion' }."', '"
 					 .$nuevoRegistro->{'hora_salida_en_planta'}."', '"
@@ -107,7 +108,7 @@ $jsonData = str_replace("'", "\"", $jsonData);
 					 ."id_fecha_muestra =  '".$nuevoRegistro->{'id_fecha_muestra' }."', "
 					 ."id_n_viaje =  '".$nuevoRegistro->{'id_n_viaje' }."', "
 					 ."id_codigo_proyecto =  '".$nuevoRegistro->{'id_codigo_proyecto' }."', "
-					 ."elemento =  '".$nuevoRegistro->{'elemento' }."', "
+					 ."id_elemento =  '".$nuevoRegistro->{'id_elemento' }."', "
 					 ."cantidad_M3 = '".$nuevoRegistro->{'cantidad_M3' }."', "
 					 ."n_camion = '".$nuevoRegistro->{'n_camion' }."', "
 					 ." hora_salida_en_planta = '".$nuevoRegistro->{'hora_salida_en_planta'}."', "
@@ -122,7 +123,7 @@ $jsonData = str_replace("'", "\"", $jsonData);
 					 ."id_usuario = '".$nuevoRegistro->{'id_usuario' }."' "
 					 ." where id_codigo_proyecto = '".$nuevoRegistro->{'id_codigo_proyecto' }."'"
 					 ." and id_fecha_muestra = '".$nuevoRegistro->{'id_fecha_muestra' }."'"
-					 ." and elemento = '".$nuevoRegistro->{'elemento' }."'"
+					 ." and id_elemento = '".$nuevoRegistro->{'id_elemento' }."'"
 					 ." and id_n_viaje = '".$nuevoRegistro->{'id_n_viaje' }."'";
 
 
